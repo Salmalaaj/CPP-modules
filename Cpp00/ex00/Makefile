@@ -1,0 +1,36 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: slaajour <slaajour@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/03/22 07:01:19 by slaajour          #+#    #+#              #
+#    Updated: 2023/03/22 07:01:20 by slaajour         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME = megaphone
+
+SRC = megaphone.cpp
+
+OBJ = $(SRC:.cpp=.o)
+
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	@clang++ -Wall -Wextra -Werror -o $(NAME) $(OBJ)
+
+%.o: %.cpp
+	@clang++ -Wall -Wextra -Werror -c $< -o $@
+
+clean:
+	@rm -f $(OBJ)
+
+fclean: clean
+	@rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
