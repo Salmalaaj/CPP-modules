@@ -6,14 +6,11 @@
 /*   By: slaajour <slaajour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 07:01:25 by slaajour          #+#    #+#             */
-/*   Updated: 2023/03/22 07:01:26 by slaajour         ###   ########.fr       */
+/*   Updated: 2023/03/23 21:02:25 by slaajour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include <string>
-#include <ctype.h>
-// using namespace std;
 
 int main(int argc, char **argv)
 {

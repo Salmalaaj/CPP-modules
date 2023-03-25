@@ -6,12 +6,23 @@
 /*   By: slaajour <slaajour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 00:17:00 by slaajour          #+#    #+#             */
-/*   Updated: 2023/03/22 06:47:02 by slaajour         ###   ########.fr       */
+/*   Updated: 2023/03/24 00:14:21 by slaajour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
 #include "Contact.hpp"
+
+std::string empty_line(std::string str, std::string request)
+{
+    while (str.empty() && !std::cin.eof())
+    {
+        std::cout << "Wrong input!" << std::endl;
+        std::cout << request;
+        getline(std::cin, str);
+    }
+    return (str);
+}
 
 void    PhoneBook::Ft_Add()
 {
@@ -20,6 +31,7 @@ void    PhoneBook::Ft_Add()
     
     std::cout << "Enter your first name ==> ";
     getline(std::cin, str);
+    str = empty_line(str, "Enter your first name ==> ");
     if (str.length() > 10)
     {
         str = str.substr(0, 9);
@@ -30,6 +42,7 @@ void    PhoneBook::Ft_Add()
         this->contact[i].set_first(str);
     std::cout << "Enter your last name ==> ";
     getline(std::cin, str);
+    str = empty_line(str, "Enter your last name ==> ");
     if (str.length() > 10)
     {
         str = str.substr(0, 9);
@@ -50,6 +63,7 @@ void    PhoneBook::Ft_Add()
         this->contact[i].set_nick(str);
     std::cout << "Enter your phone number ==> ";
     getline(std::cin, str);
+    str = empty_line(str, "Enter your number ==> ");
     if (str.length() > 10)
     {
         str = str.substr(0, 9);
@@ -60,6 +74,7 @@ void    PhoneBook::Ft_Add()
         this->contact[i].set_nemra(str);
     std::cout << "Enter your darkest secret ==> ";
     getline(std::cin, str);
+    str = empty_line(str, "Enter your darkest secret ==> ");
     if (str.length() > 10)
     {
         str = str.substr(0, 9);
@@ -76,20 +91,10 @@ void    PhoneBook::Ft_Add()
         this->index = 8;
 }
 
-void    check_index(std::string index, int raqm)
-{
-    int entier;
-
-    entier = std::stoi(index);
-    while (entier > 7)
-    // {
-        std::cout << "This index doesn't exist, try again!" << std::endl;
-        
-}
-
 void    PhoneBook::Ft_Search()
 {
     std::string in;
+    int entier;
     int i = 0;
     std::cout << "|----------|----------|----------|----------|" << std::endl;
 	std::cout << "|  INDEX   |   FIRST  |   LAST   | NICKNAME |" << std::endl;
@@ -97,14 +102,28 @@ void    PhoneBook::Ft_Search()
     while (i < this->index)
     {
         std::cout << "|    " << i << "     |";
-        std::cout << std::setw(10) << this->contact[i].get_first() << "|" << std::setw(10) \
+        std::cout << std::left << std::setw(10) << this->contact[i].get_first() << "|" << std::setw(10) \
                   << this->contact[i].get_last() << "|" << std::setw(10) << this->contact[i].get_nick() << "|" << std::endl;
         i++;
         std::cout << "|----------|----------|----------|----------|" << std::endl;
     }
     std::cout << "Write the index ==> ";
-    std::cin >> in;
-    check_index(in, this->index);   
+    getline(std::cin, in);
+    entier = in[0] - 48;
+    if (entier < 0 || entier > 7 || entier >= this->index || in.length() > 1)
+        std::cout << "Index out of range" << std::endl;
+    else
+    {
+        std::cout << "|----------|----------|----------|----------|----------|----------|" << std::endl;
+	    std::cout << "|  INDEX   |   FIRST  |   LAST   | NICKNAME | P_NUMBER | D_SECRET |" << std::endl;
+	    std::cout << "|----------|----------|----------|----------|----------|----------|" << std::endl;
+        std::cout << "|    " << entier << "     |";
+        std::cout << std::left << std::setw(10) << this->contact[entier].get_first() << "|" << std::setw(10) \
+                  << this->contact[entier].get_last() << "|" << std::setw(10) << this->contact[entier].get_nick() \
+                  << "|" << std::setw(10) << this->contact[entier].get_nemra() << "|" << std::setw(10) \
+                  << this->contact[entier].get_sir() << "|" << std::endl;
+        std::cout << "|----------|----------|----------|----------|----------|----------|" << std::endl;
+    }
 }
 
 void    PhoneBook::Ft_Exit()
