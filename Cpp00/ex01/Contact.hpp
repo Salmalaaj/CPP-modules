@@ -6,7 +6,7 @@
 /*   By: slaajour <slaajour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 07:01:36 by slaajour          #+#    #+#             */
-/*   Updated: 2023/03/22 07:01:37 by slaajour         ###   ########.fr       */
+/*   Updated: 2023/03/28 20:10:24 by slaajour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 class Contact
 {
     private:
-        std::string first_name;
+        static std::string first_name;
         std::string last_name;
         std::string nickname;
         std::string darkest_secret;

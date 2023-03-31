@@ -5,31 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: slaajour <slaajour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 00:19:21 by slaajour          #+#    #+#             */
-/*   Updated: 2023/03/27 01:55:46 by slaajour         ###   ########.fr       */
+/*   Created: 2023/03/31 06:15:18 by slaajour          #+#    #+#             */
+/*   Updated: 2023/03/31 06:21:37 by slaajour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Contact.hpp"
-#include "PhoneBook.hpp"
+#include "Harl.hpp"
 
-int main()
+int main(int argc, char **argv)
 {
-    PhoneBook ph;
+    Harl harl;
 
-    ph.index = 0;
-    std::string str;
-    std::cout << "Enter the command please :) ==> ";
-    while (getline(std::cin, str))
-    {
-        if (str == "ADD")
-            ph.Ft_Add();
-        else if (str == "SEARCH")
-            ph.Ft_Search();
-        else if (str == "EXIT")
-            ph.Ft_Exit();  
-        else
-            std::cout << "Invalid input!" << std::endl;
-        std::cout << "Enter the command please :) ==> ";
-    }
+    if (argc == 2)
+        harl.complain(argv[1]);
+    else
+        std::cerr << "There is an error in arguments :)!" << std::endl;
 }
