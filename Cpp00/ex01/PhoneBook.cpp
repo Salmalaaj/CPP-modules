@@ -6,7 +6,7 @@
 /*   By: slaajour <slaajour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 00:17:00 by slaajour          #+#    #+#             */
-/*   Updated: 2023/03/24 00:14:21 by slaajour         ###   ########.fr       */
+/*   Updated: 2023/05/27 05:39:51 by slaajour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,11 @@ void    PhoneBook::Ft_Add()
         this->index = 8;
 }
 
+void    PhoneBook::Ft_Exit()
+{
+    exit(EXIT_SUCCESS);
+}
+
 void    PhoneBook::Ft_Search()
 {
     std::string in;
@@ -124,9 +129,4 @@ void    PhoneBook::Ft_Search()
                   << this->contact[entier].get_sir() << "|" << std::endl;
         std::cout << "|----------|----------|----------|----------|----------|----------|" << std::endl;
     }
-}
-
-void    PhoneBook::Ft_Exit()
-{
-    exit(EXIT_SUCCESS);
 }
