@@ -6,7 +6,7 @@
 /*   By: slaajour <slaajour@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 06:55:25 by slaajour          #+#    #+#             */
-/*   Updated: 2023/06/24 10:34:02 by slaajour         ###   ########.fr       */
+/*   Updated: 2023/06/25 19:56:10 by slaajour         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,28 @@ void    BitcoinExchange::loadDataFromFile()
     infile.close();
 }
 
-void    BitcoinExchange::handleInputFile(std::string const &filename)
+void    BitcoinExchange::handleInputFile(std::string filename)
 {
     std::ifstream   infile(filename);
     if (!infile.is_open())
-        throw std::runtime_error("Error: could not open file.");
+        throw std::runtime_error("Error : Invalid line format");
+    float           BTC;
 
-    std::string    line;
+    std::string     line;
     while (std::getline(infile, line))
     {
         if (line.find("date") != std::string::npos)
             continue;
-        
+
         std::istringstream iss(line);
-        std::string key;
-        std::string value;
+        std::string     key;
+        std::string     value;
         
-        if (std::getline(iss, key, '|') && std::getline(iss, value, '|'))
+        if (std::getline(iss, key, '|') && std::getline(iss, value, '|')) 
         {
             if (key.length() != 11 || key[4] != '-' || key[7] != '-' || key[10] != ' ')
             {
-                std::cerr << "Error: bad input format ==> " << key << "|" << value << std::endl;
+                std::cerr << "Error: bad input => " << line << std::endl;
                 continue;
             }
             else
@@ -93,7 +94,7 @@ void    BitcoinExchange::handleInputFile(std::string const &filename)
                         continue;
                     }
                 }
-                
+
                 std::string year = line.substr(0, 4);
                 std::string month = line.substr(5, 2);
                 std::string day = line.substr(8, 2);
@@ -130,31 +131,59 @@ void    BitcoinExchange::handleInputFile(std::string const &filename)
                 }
             }
             
-            float rate;
-            float BTC = static_cast<float>(atof(value.c_str()));
-    
-            if (BTC == 0.0f && value != "0.0") {
+            try 
+            {
+                if(value[0] != ' ')
+                {
+                    std::cerr << "Error: bad input => " << line << std::endl;
+                    continue;
+                }
+                else
+                {
+                    int points = 0;
+                    for(size_t i = 1; i < value.length(); i++)
+                    {
+                        if(!isdigit(value[i]) && value[i] != '.')
+                            throw std::invalid_argument("");
+                        if(value[i] == '.')
+                            points++;
+                    }
+                    if(points > 1)
+                    {
+                        std::cerr << "Error: bad input => " << line << std::endl;
+                        continue;
+                    }
+                    BTC = std::atof(value.c_str());
+                }
+            }
+            catch (const std::exception& e) {
                 std::cerr << "Error: bad input => " << line << std::endl;
                 continue;
             }
-
-            if (BTC < 0)
-                std::cerr << "Error: not a positive number." << std::endl;
-            else if (BTC > 1000)
-                std::cerr << "Error: too large a number." << std::endl;
-            else
-            {
-                std::map<std::string, float>::const_iterator it = this->data.upper_bound(key);
-                if (it != this->data.begin())
-                    --it;
-                rate = it->second;
-                float result = BTC * rate;
-                std::cout << key << " => " << BTC << " = " << result << std::endl;
-            }
+            checkBtc(BTC, key);
         }
         else
-            std::cerr << "Error: bad input format ==> " << line << std::endl;
+			std::cerr << "Error: bad input => " << line << std::endl;
     }
-    infile.close();  
+    infile.close();
 }
 
+void    BitcoinExchange::checkBtc(float BTC, std::string key)
+{
+    float multiplication;
+    float rate;
+
+    if (BTC < 0)
+        std::cerr << "Error: not a positive number." << std::endl;
+    else if (BTC > 1000)
+        std::cerr << "Error: too large number." << std::endl;
+    else
+    {
+        std::map<std::string, float>::const_iterator it = this->data.upper_bound(key);
+        if (it != this->data.begin())
+            --it;
+        rate = it->second;
+        multiplication = BTC * rate;
+        std::cout << key << " => " << BTC << " = " << multiplication << std::endl;
+    }
+}
